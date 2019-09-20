@@ -16,4 +16,4 @@ RUN npm ci
 
 EXPOSE 3001
 
-CMD ["sh", "-c", "PORT=3001 NODE_ENV=production node ./index.js"]
+CMD ["sh", "-c", "NODE_ENV=production node ./index.js"]
