@@ -7,8 +7,9 @@ const serveStatic = require('serve-static');
 const path = require('path');
 const fs = require('fs');
 const express = require('express');
+const port = process.env.PORT || 80
 
-server.listen(3001);
+server.listen(port);
 app.use('/sounds', serveStatic(__dirname + '/private/'));
 io.on('connection', function (socket) {
   console.log('Un cliente se ha conectado');
@@ -56,4 +57,4 @@ app.get('/:character/:sound', async (req, res) => {
   }
 });
 
-console.log('App running in 3001');
+console.log('App running in port');
