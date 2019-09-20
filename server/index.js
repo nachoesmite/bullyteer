@@ -7,10 +7,18 @@ const serveStatic = require('serve-static');
 const path = require('path');
 const fs = require('fs');
 const express = require('express');
-const port = process.env.PORT || 80
 
-server.listen(port);
-app.use('/sounds', serveStatic(__dirname + '/private/'));
+const PORT = process.env.PORT || 80;
+const PRIVATE_FOLDER = 'private';
+const VALID_EXTENSIONS = ['.mp3'];
+
+server.listen(PORT);
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+
+  next();
+});
+app.use('/sounds', serveStatic(path.join(__dirname, PRIVATE_FOLDER)));
 io.on('connection', function (socket) {
   console.log('Un cliente se ha conectado');
 });
@@ -22,12 +30,11 @@ app.get('/', (req, res) => {
 
 const checkSoundExistence = (character, sound) => {
   return new Promise((resolve, reject) => {
-    fs.access(path.join(__dirname, 'private', character, `${sound}.mp3`), fs.F_OK, (err) => {
+    fs.access(path.join(__dirname, PRIVATE_FOLDER, character, `${sound}.mp3`), fs.F_OK, (err) => {
       if (err) {
         console.error(err)
         return reject(err);
       }
-      //file exists
       resolve();
     })
   });
@@ -40,6 +47,26 @@ const getSoundUrl = (character, sound) => {
   return soundPath;
 };
 
+app.get('/list', async (req, res) => {
+  const results = {};
+
+  const dirs = fs.readdirSync(path.resolve(__dirname, PRIVATE_FOLDER));
+  dirs.forEach((dir) => {
+    const files = fs.readdirSync(path.join(__dirname, PRIVATE_FOLDER, dir));
+
+    results[dir] = files
+      .filter((file) => VALID_EXTENSIONS.find((extension) => file.endsWith(extension) !== undefined))
+      .map((file) => {
+        const fileArray = file.split('.');
+
+        fileArray.pop();
+
+        return fileArray.join('.');
+      });
+  });
+
+  res.json(results);
+});
 
 app.get('/:character/:sound', async (req, res) => {
   const character = req.params.character;
@@ -57,4 +84,4 @@ app.get('/:character/:sound', async (req, res) => {
   }
 });
 
-console.log('App running in port');
+console.log(`App running in port ${PORT}`);

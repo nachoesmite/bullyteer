@@ -1,0 +1,12 @@
+.author-row {
+  margin-bottom: 10px;
+}
+
+.sounds-list {
+  display: flex;
+}
+
+.sound-item {
+  padding: 10px
+}
+
