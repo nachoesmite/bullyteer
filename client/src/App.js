@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import './App.css';
 
-let BASE_PATH = 'http://localhost:3001';
-// let BASE_PATH = 'http://localhost';
+//const BASE_PATH = 'http://localhost:3001';
+const BASE_PATH = 'http://localhost';
 
 const request = async (path) => {
   let response;
