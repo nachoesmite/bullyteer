@@ -3,13 +3,13 @@ import axios from 'axios';
 import './App.css';
 
 //const BASE_PATH = 'http://localhost:3001';
-const BASE_PATH = 'http://localhost';
+//const BASE_PATH = 'http://localhost';
 
 const request = async (path) => {
   let response;
 
   try {
-    const url = `${BASE_PATH}/${path}`;
+    const url = `/${path}`;
 
     response = await axios.get(url);
   } catch (error) {
