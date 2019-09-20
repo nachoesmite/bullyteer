@@ -31,6 +31,6 @@ function notifyMe(sound, text) {
 socket.on('messages', function(sound, text) {
     bullySound.pause();
     bullySound.currentTime = 0;
-    notifyMe(sound,text);
+    notifyMe(sound, text);
 });
  
