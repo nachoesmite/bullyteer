@@ -1,6 +1,6 @@
 var io = require('socket.io-client');
 var ss = require('socket.io-stream');
-var socket = io.connect('http://localhost:3001/');
+var socket = io.connect('/');
 var stream = ss.createStream();
 var sound;
 var text;

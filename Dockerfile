@@ -7,11 +7,13 @@ COPY . .
 WORKDIR /usr/src/app/client
 
 RUN npm ci
+RUN cat package.json
+RUN npm run build
 
 WORKDIR /usr/src/app/server
 
 RUN npm ci
 
-EXPOSE 3000
+EXPOSE 3001
 
-CMD ["bash", "-c", "PORT=3000 NODE_ENV=production node ./index.js"]
+CMD ["sh", "-c", "PORT=3001 NODE_ENV=production node ./index.js"]

@@ -6,6 +6,7 @@ const io = require('socket.io').listen(server);
 const serveStatic = require('serve-static');
 const path = require('path');
 const fs = require('fs');
+const express = require('express');
 
 server.listen(3001);
 app.use('/sounds', serveStatic(__dirname + '/private/'));
@@ -13,6 +14,10 @@ io.on('connection', function (socket) {
   console.log('Un cliente se ha conectado');
 });
 
+app.use(express.static(path.resolve(__dirname, './public/')));
+app.get('/', (req, res) => {
+  res.sendFile(path.resolve(__dirname, './public/', './index.html'));
+});
 
 const checkSoundExistence = (character, sound) => {
   return new Promise((resolve, reject) => {
