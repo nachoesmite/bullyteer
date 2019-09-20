@@ -1,62 +1,75 @@
-const http = require('http');
+var ss = require('socket.io-stream');
+var stream = ss.createStream();
+var app = require('express')();
+var express = require('express');
+var server = require('http').createServer(app);
+var io = require('socket.io').listen(server);
 const fileSystem = require('fs');
-const express = require('express');
-const ss = require('socket.io-stream');
 const path = require('path');
-const app = express();
-const api = express();
+var serveStatic = require('serve-static');
 
-api.get('/track', (req, res, err) => {
-  // generate file path
-  const filePath = path.resolve(__dirname, './private', './track.wav');
-  // get file size info
-  const stat = fileSystem.statSync(filePath);
-
-  // set response header info
-  res.writeHead(200, {
-    'Content-Type': 'audio/mpeg',
-    'Content-Length': stat.size
-  });
-  //create read stream
-  const readStream = fileSystem.createReadStream(filePath);
-  // attach this stream with response stream
-  readStream.pipe(res);
+server.listen(3001);
+app.use('/sounds', serveStatic(__dirname + '/private/'));
+//app.use('/sounds', express.directory(__dirname + '/private'));
+io.on('connection', function(socket) {
+	console.log('Un cliente se ha conectado');
+  //socket.emit('messages',"https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_700KB.mp3", "Hola soy juan", stream);
+});
+//GUIDO
+app.get('/guido/estamal', function (req, res) {
+  console.log('Cliente');
+  io.emit('messages',"http://localhost:3001/sounds/guido/estamal.mp3", "Esta mal", stream);
+  res.send('Trolleaste a todos papaa!!');
+});
+app.get('/guido/peronotanmal', function (req, res) {
+  console.log('Cliente');
+  io.emit('messages',"http://localhost:3001/sounds/guido/peronotanmal.mp3", "PERO NO TAAAAAN MAL!", stream);
+  res.send('Trolleaste a todos papaa!!');
+});
+// RANDOM
+app.get('/random/encaravanao', function (req, res) {
+  console.log('Cliente');
+  io.emit('messages',"http://localhost:3001/sounds/random/encaravano.mp3", "TOY ENCARAVAAAANAO", stream);
+  res.send('Trolleaste a todos papaa!!');
+});
+app.get('/random/keno', function (req, res) {
+  console.log('Cliente');
+  io.emit('messages',"http://localhost:3001/sounds/random/keno.mp3", "KEEEENO!!!!???", stream);
+  res.send('Trolleaste a todos papaa!!');
+});
+app.get('/random/kepregunta', function (req, res) {
+  console.log('Cliente');
+  io.emit('messages',"http://localhost:3001/sounds/random/kepregunta.mp3", "KE PREEEEEEGUUUUUUNTAAAAA", stream);
+  res.send('Trolleaste a todos papaa!!');
+});
+app.get('/random/toyechao', function (req, res) {
+  console.log('Cliente');
+  io.emit('messages',"http://localhost:3001/sounds/random/toyechao.mp3", "TOY EEEEECHAAAOOO!", stream);
+  res.send('Trolleaste a todos papaa!!');
+});
+// SAMID
+app.get('/samid/barbaridad', function (req, res) {
+  console.log('Cliente');
+  io.emit('messages',"http://localhost:3001/sounds/samid/barbaridad.mp3", "USTED NO PUEDE DECIR SEMEJANTE BARBARIDAD", stream);
+  res.send('Trolleaste a todos papaa!!');
+});
+app.get('/samid/barbaridad2', function (req, res) {
+  console.log('Cliente');
+  io.emit('messages',"http://localhost:3001/sounds/samid/barbaridad2.mp3", "BARBARIDAD", stream);
+  res.send('Trolleaste a todos papaa!!');
+});
+app.get('/samid/nopuede', function (req, res) {
+  console.log('Cliente');
+  io.emit('messages',"http://localhost:3001/sounds/samid/nopuede.mp3", "USTED NO PUEDE DECIR", stream);
+  res.send('Trolleaste a todos papaa!!');
+});
+app.get('/samid/tieneque', function (req, res) {
+  console.log('Cliente');
+  io.emit('messages',"http://localhost:3001/sounds/samid/tieneque.mp3", "USTED TIENE QUE ARREPENTIRSE", stream);
+  res.send('Trolleaste a todos papaa!!');
 });
 
-//register api calls
-app.use('/api/v1/', api);
 
-// send react app on / GET
-app.use(express.static(path.resolve(__dirname, './public/build/')));
-app.use(express.static(path.resolve(__dirname, './public/assets/')));
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, './public/build/', './index.html'));
-});
+//io.of('/guido').on('connection', function sendnotification());
 
-const server = http.createServer(app);
-const io = require('socket.io').listen(server, {
-  log: false,
-  agent: false,
-  origins: '*:*',
-  transports: ['websocket', 'htmlfile', 'xhr-polling', 'jsonp-polling', 'polling']
-});
-
-io.on('connection', client => {
-
-  const stream = ss.createStream();
-
-  client.on('track', () => {
-    const filePath = path.resolve(__dirname, './private', './track.wav');
-    const stat = fileSystem.statSync(filePath);
-    const readStream = fileSystem.createReadStream(filePath);
-    // pipe stream with response stream
-    readStream.pipe(stream);
-
-    ss(client).emit('track-stream', stream, { stat });
-  });
-  client.on('disconnect', () => {});
-});
-
-server.listen(process.env.PORT || '3001', function () {
-  console.log('Server app listening on port 3001!');
-});
+console.log('App running in 3001');
