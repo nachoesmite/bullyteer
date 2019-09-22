@@ -38,6 +38,11 @@ class App extends Component {
 
   render() {
     return <div className='app-container'>
+      <header className='globalHeader' role='banner'>
+        <div className='Banner'>
+          <h2>Bullyteer!</h2>
+        </div>
+      </header>
       {Object.keys(this.state.authors).map((author) =>
         <div key={author} className='author-row'>
           <div className='author-title'>{author}</div>

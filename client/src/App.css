@@ -1,12 +1,46 @@
+@import url('https://fonts.googleapis.com/css?family=Ubuntu&display=swap');
+
+body{
+  margin: 0px;
+  background-color: rgb(0, 139, 139);
+}
+.app-container{
+  margin: 0px;
+  background-color: rgba(0, 139, 139, 0.753);
+}
+.Banner{
+  margin-top: 0px;
+  padding-left: 20px;
+  font-family: Ubuntu;
+  color: whitesmoke;
+  background-color: darkcyan;
+}
+
 .author-row {
-  margin-bottom: 10px;
+  font-family: Ubuntu;
+  background-color:rgba(47, 79, 79, 0.657);
+}
+.author-title{
+  padding-bottom: 10px;
+  padding-left: 20px;
+  padding-top:10px;
+  color: whitesmoke;
+  background-color: rgba(0, 139, 139, 0.753);
 }
 
 .sounds-list {
+  padding:10px;
+  padding-left:30px;
   display: flex;
+  font-family: Ubuntu;
 }
 
 .sound-item {
-  padding: 10px
+  padding: 10px;
+  margin-left: 5px;
+  color: rgb(137, 43, 226);
+  font-weight: 700;
+  background-color: rgba(0, 139, 139, 0.63);
+  border-color: black;
 }
 
