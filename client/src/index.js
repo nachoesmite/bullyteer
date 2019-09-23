@@ -2,23 +2,19 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 
-console.log('env', process.env.SERVER_PORT);
-
 var io = require('socket.io-client');
-// var socket = io.connect('http://localhost:8080');
 var socket = io.connect('/');
 var bullySound = new Audio()
 
 function notifyMe(sound, text) {
-  // bullySound = new Audio(`http://localhost:3001/${sound}`);
   bullySound = new Audio(sound);
+  var image = text.split(":")[0];
+  var iconUrl = `/images/${image}.jpg`;
   if (!("Notification" in window)) {
     alert("This browser does not support desktop notification");
   }
   else if (Notification.permission === "granted") {
-
-    new Notification(text);
-
+    new Notification(text, {badge: iconUrl});
     bullySound.play();
   }
 
@@ -26,7 +22,7 @@ function notifyMe(sound, text) {
     Notification.requestPermission(function (permission) {
       if (permission === "granted") {
 
-        new Notification(text);
+        new Notification(text,{badge: iconUrl });
 
         bullySound.play();
       }
