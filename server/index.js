@@ -10,6 +10,7 @@ const express = require('express');
 
 const PORT = process.env.PORT || 80;
 const PRIVATE_FOLDER = 'private';
+const IMAGES_FOLDER = 'images';
 const VALID_EXTENSIONS = ['.mp3'];
 
 server.listen(PORT);
@@ -19,6 +20,7 @@ app.use((req, res, next) => {
   next();
 });
 app.use('/sounds', serveStatic(path.join(__dirname, PRIVATE_FOLDER)));
+app.use('/images', serveStatic(path.join(__dirname, IMAGES_FOLDER)));
 io.on('connection', function (socket) {
   console.log('Un cliente se ha conectado');
 });
