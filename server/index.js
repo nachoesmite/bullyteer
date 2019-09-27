@@ -55,7 +55,7 @@ app.get('/list', async (req, res) => {
     const files = fs.readdirSync(path.join(__dirname, PRIVATE_FOLDER, dir));
 
     results[dir] = files
-      .filter((file) => VALID_EXTENSIONS.find((extension) => file.endsWith(extension) !== undefined))
+      .filter((file) => VALID_EXTENSIONS.find((extension) => file.endsWith(extension)) !== undefined)
       .map((file) => {
         const fileArray = file.split('.');
 
