@@ -7,10 +7,28 @@ const serveStatic = require('serve-static');
 const path = require('path');
 const fs = require('fs');
 const express = require('express');
+const jwt = require('express-jwt');
+const jwtAuthz = require('express-jwt-authz');
+const jwksRsa = require('jwks-rsa');
+const auth0config = require('./auth_config.json');
 
 const PORT = process.env.PORT || 80;
 const PRIVATE_FOLDER = 'private';
 const VALID_EXTENSIONS = ['.mp3'];
+
+
+var checkJwt = jwt({
+    secret: jwksRsa.expressJwtSecret({
+      cache: true,
+      rateLimit: true,
+      jwksRequestsPerMinute: 5,
+      jwksUri: `https://${auth0config.domain}/.well-known/jwks.json`
+    }),
+    audience: auth0config.clientId,
+    issuer: `https://${auth0config.domain}/`,
+    algorithms: ['RS256']
+});
+
 
 server.listen(PORT);
 app.use((req, res, next) => {
@@ -25,6 +43,9 @@ io.on('connection', function (socket) {
 
 app.use(express.static(path.resolve(__dirname, './public/')));
 app.get('/', (req, res) => {
+  res.sendFile(path.resolve(__dirname, './public/', './index.html'));
+});
+app.get('/callback', (req, res) => {
   res.sendFile(path.resolve(__dirname, './public/', './index.html'));
 });
 
@@ -68,7 +89,7 @@ app.get('/list', async (req, res) => {
   res.json(results);
 });
 
-app.get('/:character/:sound', async (req, res) => {
+app.get('/:character/:sound', checkJwt, async (req, res) => {
   const character = req.params.character;
   const sound = req.params.sound;
 

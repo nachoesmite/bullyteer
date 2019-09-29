@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@auth0/auth0-spa-js": "^1.2.4",
+    "auth0-js": "^9.11.3",
     "axios": "^0.18.0",
     "bootstrap": "^4.3.1",
     "bootstrap-material-design": "^4.1.1",
@@ -27,7 +29,6 @@
   "eslintConfig": {
     "extends": "react-app"
   },
-  "proxy": "http://localhost:3001/",
   "browserslist": [
     ">0.2%",
     "not dead",

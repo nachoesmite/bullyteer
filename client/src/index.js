@@ -1,23 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
+import {BrowserRouter} from 'react-router-dom';
 
-console.log('env', process.env.SERVER_PORT);
+//console.log('env', process.env.SERVER_PORT);
 
 var io = require('socket.io-client');
-// var socket = io.connect('http://localhost:8080');
 var socket = io.connect('/');
 var bullySound = new Audio()
 
+
 function notifyMe(sound, text) {
-  // bullySound = new Audio(`http://localhost:3001/${sound}`);
   bullySound = new Audio(sound);
   if (!("Notification" in window)) {
     alert("This browser does not support desktop notification");
   }
   else if (Notification.permission === "granted") {
 
-    new Notification(text);
+    //new Notification(text);
 
     bullySound.play();
   }
@@ -26,7 +26,7 @@ function notifyMe(sound, text) {
     Notification.requestPermission(function (permission) {
       if (permission === "granted") {
 
-        new Notification(text);
+        //new Notification(text);
 
         bullySound.play();
       }
@@ -41,4 +41,8 @@ socket.on('messages', function (sound, text) {
   notifyMe(sound, text);
 });
 
-ReactDOM.render(<App serverPort={process.env.SERVER_PORT} />, document.getElementById('root'));
+ReactDOM.render(
+  <BrowserRouter>
+  <App serverPort={process.env.SERVER_PORT}/>
+  </BrowserRouter>,
+  document.getElementById('root'));
